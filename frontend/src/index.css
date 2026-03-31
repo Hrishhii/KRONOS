@@ -1,0 +1,918 @@
+/* 
+  ==========================================
+   CRUCIX MONITOR / TACTICAL TERMINAL UI
+  ==========================================
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  /* Ultra-Dark Stealth Mode Colors */
+  --bg-primary: #020408;
+  --bg-secondary: #080b12;
+  --bg-panel: #0a0d14;
+  
+  --border-dim: #1a202c;
+  --border-bright: #2d3748;
+  --border-active: #00d4ff;
+
+  --text-main: #e2e8f0;
+  --text-dim: #718096;
+  --text-muted: #4a5568;
+
+  /* Neon Accents */
+  --neon-cyan: #00d4ff;
+  --neon-blue: #3b82f6;
+  --neon-green: #10b981;
+  --neon-amber: #f59e0b;
+  --neon-red: #ef4444;
+
+  --font-mono: 'Fira Code', monospace;
+  --font-sans: 'Inter', sans-serif;
+  
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  overflow: hidden; 
+}
+
+/* 
+  ---------------------------------
+  1. MAIN DASHBOARD GRID (5 PANE)
+  ---------------------------------
+*/
+
+/* 
+  ---------------------------------
+  1. TACTICAL_INTEL_OS LAYOUT
+  ---------------------------------
+*/
+
+.tactical-os-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg-primary);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+.os-sidebar {
+  width: 70px;
+  background: #080a0e;
+  border-right: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  z-index: 50;
+}
+
+.sidebar-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0;
+  color: var(--text-dim);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.nav-item .nav-icon {
+  margin-bottom: 5px;
+  opacity: 0.6;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: var(--neon-green);
+  background: rgba(16, 185, 129, 0.05);
+  border-left: 3px solid var(--neon-green);
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
+  color: var(--neon-green);
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+}
+
+/* MAIN WORKSPACE */
+.os-workspace {
+  flex: 1;
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+/* LEFT COLUMN (DATA) */
+.os-col-left {
+  flex: 0 0 50%;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* RIGHT COLUMN (ENGINE) */
+.os-col-right {
+  flex: 0 0 calc(50% - 15px);
+  max-width: calc(50% - 15px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* MODULE BASICS */
+.os-module {
+  background: rgba(10, 14, 20, 0.8);
+  border: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.os-split-row {
+  display: flex;
+  flex: 1;
+  gap: 15px;
+  min-height: 0; 
+}
+
+.split-left, .split-right {
+  flex: 1;
+}
+
+/* MAP HUD SPECIALS */
+.map-module {
+  flex: 0 0 calc(52% - 15px);
+  position: relative;
+  border: 1px solid var(--border-bright);
+}
+
+.map-hud-overlay {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 400;
+  pointer-events: none;
+}
+
+.hud-coords {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #fff;
+}
+
+.hud-label {
+  color: var(--neon-green);
+  display: inline-block;
+  width: 40px;
+}
+
+.hud-timer {
+  text-align: right;
+}
+
+.timer-clock {
+  font-size: 24px;
+  font-weight: 700;
+  color: #718096;
+  font-family: var(--font-mono);
+}
+
+.timer-label {
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.map-nodes-online {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid var(--neon-green);
+  color: #fff;
+  padding: 4px 12px;
+  font-size: 9px;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.online-pulse {
+  width: 6px;
+  height: 6px;
+  background: var(--neon-green);
+  border-radius: 50%;
+  animation: bgBlink 2s infinite;
+}
+
+@keyframes bgBlink {
+  0% { opacity: 1; box-shadow: 0 0 5px var(--neon-green); }
+  50% { opacity: 0.2; box-shadow: none; }
+  100% { opacity: 1; box-shadow: 0 0 5px var(--neon-green); }
+}
+
+/* HEURISTIC ENGINE TERMINAL */
+.engine-module {
+  flex: 1;
+}
+
+.engine-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-dim);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  background: rgba(0,0,0,0.5);
+}
+
+.engine-title {
+  display: flex;
+  align-items: center;
+  color: #fff;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.green-dot {
+  background: var(--neon-green);
+  box-shadow: 0 0 6px var(--neon-green);
+}
+
+.engine-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 9px;
+}
+
+.uptime-label {
+  color: var(--text-dim);
+}
+
+.kern-ok {
+  color: var(--neon-green);
+}
+
+.log-stream-container {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  font-family: var(--font-mono);
+}
+
+/* COMMAND TERMINAL AT BOTTOM */
+.command-terminal-wrapper {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid var(--neon-green);
+  border-bottom: 1px solid var(--border-dim);
+  padding: 10px 16px;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.cmd-prompt-label {
+  color: var(--neon-green);
+  font-weight: 700;
+  margin-right: 15px;
+  font-size: 13px;
+}
+
+.cmd-form {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.cmd-input-field {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--neon-green);
+  padding: 8px 12px;
+  color: #fff;
+  font-family: var(--font-mono);
+  outline: none;
+  font-size: 12px;
+}
+
+.cmd-input-field::placeholder {
+  color: rgba(16, 185, 129, 0.4);
+}
+
+.cmd-icons {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  gap: 10px;
+  color: var(--text-muted);
+}
+
+.cmd-btn-send {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.cmd-btn-send:hover:not(:disabled) {
+  color: var(--neon-green);
+}
+
+.terminal-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  font-size: 8px;
+  color: var(--text-dim);
+  letter-spacing: 0.5px;
+}
+
+/* 
+  ---------------------------------
+  2. PANE STYLING
+  ---------------------------------
+*/
+
+.grid-pane {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-dim);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.text-dim { color: var(--text-dim); }
+.text-green { color: var(--neon-green); }
+.text-amber { color: var(--neon-amber); }
+.text-cyan { color: var(--neon-cyan); }
+.text-red { color: var(--neon-red); }
+
+.neon-red { color: var(--neon-red); text-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+.neon-amber { color: var(--neon-amber); text-shadow: 0 0 5px rgba(245, 158, 11, 0.4); }
+.neon-cyan { color: var(--neon-cyan); text-shadow: 0 0 5px rgba(0, 212, 255, 0.4); }
+
+.border-amber { border-left-color: var(--neon-amber) !important; }
+
+/* 
+  ---------------------------------
+  3. DATA VISUALIZATIONS
+  ---------------------------------
+*/
+
+.pane-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.pane-content::-webkit-scrollbar { width: 4px; }
+.pane-content::-webkit-scrollbar-track { background: var(--bg-panel); }
+.pane-content::-webkit-scrollbar-thumb { background: var(--border-bright); }
+.pane-content::-webkit-scrollbar-thumb:hover { background: var(--neon-cyan); }
+
+/* Briefing Internal Overrides */
+.briefing-pane .output-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border-dim);
+  padding-bottom: 10px;
+}
+
+.briefing-pane .domains-badge {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.briefing-pane .domain-tag {
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--neon-cyan);
+  border: 1px solid var(--neon-cyan);
+  padding: 4px 10px;
+  font-size: 10px;
+}
+
+.news-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.news-item {
+  border-left: 2px solid var(--border-dim);
+  padding-left: 10px;
+  transition: all 0.2s;
+}
+
+.news-item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.news-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+.news-time {
+  color: var(--text-muted);
+}
+
+.news-title {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--text-main);
+}
+
+.news-detail {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Ticker Board */
+.market-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.market-ticker {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-dim);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ticker-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticker-symbol {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+}
+
+.ticker-name {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.ticker-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--neon-green);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+}
+
+/* Empty State / Loader */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  color: var(--text-main);
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed var(--border-dim);
+  border-radius: 4px;
+}
+
+.loader-scan {
+  width: 100px;
+  height: 1px;
+  background: var(--border-dim);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--spacing-md);
+}
+
+.loader-scan::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 50%;
+  height: 100%;
+  background: var(--neon-red);
+  animation: scan 1.5s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--neon-red);
+}
+
+@keyframes scan {
+  0% { left: -50%; }
+  100% { left: 100%; }
+}
+
+/* 
+  ---------------------------------
+  4. MAP STYLING (CENTER)
+  ---------------------------------
+*/
+
+.world-map-container {
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.leaflet-bar a, .leaflet-bar a:hover {
+  background-color: var(--bg-panel) !important;
+  color: var(--neon-cyan) !important;
+  border-color: var(--border-bright) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(10, 14, 23, 0.95);
+  border: 1px solid var(--neon-cyan);
+  color: var(--text-main);
+  border-radius: 0;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+  font-family: var(--font-mono);
+}
+
+.leaflet-popup-tip {
+  background: rgba(10, 14, 23, 0.95);
+  border: 1px solid var(--neon-cyan);
+}
+
+.map-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 400; 
+}
+
+.map-crosshair::before, .map-crosshair::after {
+  content: '';
+  position: absolute;
+  background: rgba(239, 68, 68, 0.7);
+}
+
+.map-crosshair::before { top: 50%; left: -10px; right: -10px; height: 1px; }
+.map-crosshair::after { left: 50%; top: -10px; bottom: -10px; width: 1px; }
+
+.map-legend {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-around;
+  background: rgba(10, 13, 20, 0.85);
+  border-top: 1px solid var(--border-dim);
+  padding: 6px 12px;
+  z-index: 400;
+  font-size: 9px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-dim);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-flight { background: #00d4ff; box-shadow: 0 0 5px #00d4ff; }
+.dot-ship { background: #4da6ff; box-shadow: 0 0 5px #4da6ff; }
+.dot-climate { background: #ffd93d; box-shadow: 0 0 5px #ffd93d; }
+
+/* 
+  ---------------------------------
+  5. TERMINAL COMMAND BAR (BOTTOM)
+  ---------------------------------
+*/
+
+.dashboard-command-line {
+  display: flex;
+  align-items: center;
+  height: 45px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid var(--border-bright);
+  border-left: 4px solid var(--neon-cyan);
+  padding: 0 16px;
+  box-shadow: 0 -2px 15px rgba(0, 212, 255, 0.1);
+}
+
+.cli-prompt {
+  color: var(--neon-cyan);
+  font-weight: 700;
+  margin-right: var(--spacing-md);
+  user-select: none;
+  font-size: 14px;
+}
+
+.cli-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  outline: none;
+}
+
+.cli-input::placeholder {
+  color: rgba(200, 200, 200, 0.4);
+}
+
+.cli-execute {
+  background: transparent;
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+}
+
+.cli-execute:hover:not(:disabled) {
+  background: var(--neon-cyan);
+  color: #000;
+  box-shadow: 0 0 10px var(--neon-cyan);
+}
+
+.cli-execute:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--text-muted);
+  border-color: var(--border-dim);
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+/* ── Tactical popup: strip Leaflet's default white box ───────────────────── */
+.tactical-popup .leaflet-popup-content-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+}
+.tactical-popup .leaflet-popup-content {
+  margin: 0 !important;
+}
+.tactical-popup .leaflet-popup-tip-container {
+  display: none !important;
+}
+
+/* ── Drag divider between panels ─────────────────────────────────────────── */
+.drag-divider-v {
+  width: 6px;
+  cursor: col-resize;
+  background: var(--border-dim);
+  flex-shrink: 0;
+  transition: background 0.15s;
+  position: relative;
+}
+.drag-divider-v:hover,
+.drag-divider-v.dragging {
+  background: var(--neon-cyan);
+}
+.drag-divider-v::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 2px;
+  height: 40px;
+  background: currentColor;
+  border-radius: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+
+.drag-divider-h {
+  height: 6px;
+  cursor: row-resize;
+  background: var(--border-dim);
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.drag-divider-h:hover,
+.drag-divider-h.dragging {
+  background: var(--neon-cyan);
+}
+
+body::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.2) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+/* 
+  ---------------------------------
+  8. TERMINAL CHAT UI (Phase 30)
+  ---------------------------------
+*/
+
+.conversation-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 8px 0;
+  width: 100%;
+}
+
+/* User bubble — right aligned */
+.chat-block.user-block {
+  align-self: flex-end;
+  max-width: 80%;
+}
+
+.chat-msg-user {
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: 4px;
+  padding: 12px 18px;
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  line-height: 1.6;
+  word-break: break-word;
+}
+
+/* HEURISTIC_AI block — left aligned */
+.chat-block.ai-block {
+  align-self: flex-start;
+  width: 100%;
+}
+
+.chat-msg-ai {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-left: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 4px;
+  padding: 14px 18px;
+  color: rgba(255, 255, 255, 0.80);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.3px;
+  line-height: 1.75;
+}
+
+/* Chat meta labels */
+.chat-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+/* Output panel: smooth scroll container */
+.output-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.output-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 4px;
+  scroll-behavior: smooth;
+}
+
+.output-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.output-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.output-content::-webkit-scrollbar-thumb {
+  background: var(--border-dim);
+  border-radius: 2px;
+}
+
+.output-content::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+

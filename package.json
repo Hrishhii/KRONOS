@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@deck.gl/layers": "^9.2.11",
+    "@deck.gl/react": "^9.2.11",
+    "deck.gl": "^9.2.11",
+    "feedparser": "^2.2.10",
+    "mapbox-gl": "^3.20.0",
+    "react-map-gl": "^8.1.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.0"
+  }
+}
