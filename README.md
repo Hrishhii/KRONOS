@@ -17,21 +17,17 @@ KRONOS is a multi-agent intelligence platform for strategic forecasting and real
 ## 📋 Table of Contents
 
 - [Overview](#overview)
-- [Architecture](#architecture)
+- [Architecture](#️architecture)
 - [Data Sources & APIs](#-data-sources--apis)
 - [Core Features](#core-features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
+- [Installation](#️installation)
 - [Configuration](#configuration)
 - [Running the System](#running-the-system)
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
 - [Troubleshooting](#troubleshooting)
-- [Example Queries](#example-queries)
-- [Additional Documentation](#additional-documentation)
 - [Contributing](#contributing)
 - [Support](#support)
-- [License](#license)
 
 ---
 
