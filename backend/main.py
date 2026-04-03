@@ -96,54 +96,6 @@ def get_sample_flight_data():
     
     return flights
 
-async def get_ship_traffic_data():
-    """
-    Fetch ALL real ship tracking data from AIS services
-    Using public AIS data sources or comprehensive demo data
-    """
-    try:
-        from backend.domain_connectors.ships import ShipsConnector
-        ships = await ShipsConnector.get_global_ships()
-        print(f"[SHIPS] Returning {len(ships)} total ships")
-        return ships[:2000]
-    except Exception as e:
-        print(f"Ship data error: {e}")
-        return get_sample_ship_data()
-
-def get_sample_ship_data():
-    """Comprehensive realistic ship/cargo data across global trade routes"""
-    ships = []
-    shipping_lanes = [
-        {"name": "Suez", "lat": 27, "lng": 34, "ships": 40},
-        {"name": "Panama", "lat": 9, "lng": -79, "ships": 35},
-        {"name": "Singapore", "lat": 1.2, "lng": 103.8, "ships": 55},
-        {"name": "Rotterdam", "lat": 51.9, "lng": 4.3, "ships": 30},
-        {"name": "Shanghai", "lat": 30.3, "lng": 122.3, "ships": 50},
-        {"name": "Los Angeles", "lat": 33.7, "lng": -118.2, "ships": 30},
-        {"name": "Dubai", "lat": 25.2, "lng": 55.3, "ships": 25},
-        {"name": "Mediterranean", "lat": 35, "lng": 20, "ships": 45},
-        {"name": "North Atlantic", "lat": 45, "lng": -30, "ships": 60},
-        {"name": "Indian Ocean", "lat": -5, "lng": 70, "ships": 75},
-        {"name": "South China Sea", "lat": 12, "lng": 114, "ships": 55},
-    ]
-    
-    vessel_types = ["Container Ship", "Bulk Carrier", "Tanker", "General Cargo"]
-    
-    for lane in shipping_lanes:
-        volume = lane["ships"] * 5  # 500% increase in cargo tracking
-        for i in range(volume):
-            ships.append({
-                "name": f"{lane['name'].upper()}-{random.randint(1000, 9999)}",
-                "lat": lane["lat"] + random.uniform(-15, 15),
-                "lng": lane["lng"] + random.uniform(-25, 25),
-                "type": random.choice(vessel_types),
-                "speed": random.randint(8, 24),
-                "heading": random.randint(0, 360),
-                "mmsi": random.randint(100000000, 999999999)
-            })
-    
-    return ships
-
 async def get_weather_data():
     """
     Fetch real weather data from OpenWeatherMap

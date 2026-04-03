@@ -2,6 +2,8 @@
 
 > **Strategic Intelligence Operations & Predictive Ontology Convergence System**
 
+![KRONOS Dashboard](docs/images/Screenshot%202026-03-31%20223533.png)
+
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Neo4j](https://img.shields.io/badge/Neo4j-5.15+-blue?style=for-the-badge&logo=neo4j&logoColor=white)](https://neo4j.com/)
@@ -46,25 +48,25 @@ Key differentiator: **Zero-clutter ontology** — only connected nodes are persi
 ### System Pipeline
 
 ```
-User Query 
+User Query
     ↓
-Neural Router
+Neural Router (Agent 0)
     ↓
-    ├─→ [Geopolitics Agent]
-    ├─→ [Economics Agent]
-    ├─→ [Technology Agent]
-    ├─→ [Climate Agent]
-    ├─→ [Flights Agent]
-    ├─→ [Ships Agent]
-    └─→ [Additional Domain Agents]
+Parallel Domain Agents
+    ├─→ Geopolitics Agent (Agent 1)
+    ├─→ Climate Agent (Agent 2)
+    ├─→ Economics Agent (Agent 3)
+    └─→ Technology Agent (Agent 4)
     ↓
-LLM Ontology Extractor (async background task)
+Support Context Streams
+    ├─→ Tavily contextual knowledge
+    └─→ Neo4j Knowledge Graph context fetch
     ↓
-Neo4j Knowledge Graph (relationship validation & persistence)
+Cross-domain synthesis via LLM (Groq + LLaMA 3.1)
     ↓
-Frontend Poll (60s interval)
+Chief Editor Agent (final briefing)
     ↓
-Interactive Knowledge Graph Visualization
+Neo4j persist + API response
 ```
 
 ### Component Stack
@@ -72,6 +74,7 @@ Interactive Knowledge Graph Visualization
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
 | **Backend** | FastAPI + Python 3.10+ | Multi-agent orchestration, API endpoints |
+| **LLMs (Inference Engine)** | Groq + LLaMA 3.1 / 3.3 | Ultra-fast inference for core routing and analysis |
 | **Knowledge Graph** | Neo4j | Entity/relationship persistence |
 | **Agent Framework** | LangGraph | Agentic workflows and routing |
 | **Frontend** | React 18 + Vite | Interactive graph visualization |
@@ -79,12 +82,30 @@ Interactive Knowledge Graph Visualization
 
 ---
 
+## 🌐 Data Sources & APIs
+
+KRONOS ingests live and historical metrics from the following external APIs.
+
+*Note: The AI operations are handled securely via [Groq](https://console.groq.com/) using LLaMA models (specifically LLaMA 3.1 and 3.3), acting as the central intelligence engine rather than a raw data feed.*
+
+| Domain / Engine | API Integrations & Links |
+|-----------------|--------------------------|
+| **Economics** | [FRED (Federal Reserve Economic Data)](https://fred.stlouisfed.org/docs/api/fred/) <br> [yfinance (Yahoo Finance)](https://pypi.org/project/yfinance/) |
+| **Geopolitics & News** | [Google News RSS](https://news.google.com/rss) <br> [NewsAPI](https://newsapi.org/) |
+| **Climate & Weather** | [OpenWeatherMap API](https://openweathermap.org/api) |
+| **Aerospace & Space** | [NASA API (EONET)](https://api.nasa.gov/) |
+| **Transportation** | [OpenSky Network API](https://openskynetwork.github.io/opensky-api/) (Flights) |
+| **World Base Context** | [Tavily API](https://tavily.com/) *(Search and Guidance)* |
+
+---
+
 ## 💎 Core Features
 
 ### 1. **Multi-Domain Intelligence Agents**
-- Parallel execution of 11+ specialized agents (Geopolitics, Economics, Technology, Climate, etc.)
-- Real-time data fetching from APIs: FRED, NewsAPI, GDELT, Tavily, and more
-- Contextual neighborhood fetching (2-degree graph proximity)
+- Parallel execution of 4 core domain agents (Geopolitics, Climate, Economics, Technology)
+- Augmented by 2 context streams (Tavily guidance + Neo4j knowledge graph context)
+- Support from intelligence data feeds APIs including **Google News RSS**, **FRED**, **NewsAPI**, **OpenWeatherMap**, **NASA API**, **OpenSky**, **yfinance**, and **Tavily**
+- 2-degree graph contextual neighborhood fetching for precision intelligence
 
 ### 2. **Intelligent Ontology Management**
 - Automatic entity normalization (merges aliases)
@@ -157,26 +178,30 @@ cd ..
 
 ### 1. Environment Variables
 
-Create a `.env` file in the project root:
+Copy the `.env.example` file to create a `.env` file in the project root:
+
+```bash
+# Windows
+copy .env.example .env
+
+# macOS/Linux
+cp .env.example .env
+```
+
+Open the newly created `.env` file and replace the placeholders with your actual keys. The file should look like this:
 
 ```env
-# Neo4j Configuration
-NEO4J_HOST=bolt://localhost:7687
-NEO4J_USER=neo4j
-NEO4J_PASSWORD=your_neo4j_password
+# Add your API keys here
+FRED_API_KEY=your_fredapi_key_here
+NEWSAPI_KEY=your_newsapi_key_here
+OPENWEATHERMAP_API_KEY=your_openweathermapapi_key_here
+GROQ_API_KEY=your_groq_api_key_here
+TAVILY_API_KEY=your_tavily_api_key_here
+NASA_API_KEY=your_nasa_api_key_here
 
-# API Keys
-GROQ_API_KEY=your_groq_api_key
-NEWSAPI_KEY=your_newsapi_key
-TAVILY_API_KEY=your_tavily_api_key
-
-# Optional API Keys (for enhanced features)
-FRED_API_KEY=your_fred_api_key
-GDELT_API_KEY=your_gdelt_api_key
-
-# Application Settings
-DEBUG=False
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+# Free APIs for flights and ships (no API keys needed)
+OPENSKY_API_ENABLED=true
+NEO4J_PASSWORD=your_neo4j_password_here
 ```
 
 ### 2. Neo4j Setup
@@ -195,7 +220,7 @@ ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
 
 ## 🚀 Running the System
 
-### Option A: Development Mode (Recommended)
+
 
 #### Terminal 1 - Backend Server
 ```bash
@@ -216,20 +241,6 @@ npm run dev
 
 Frontend will be available at: `http://localhost:5173`
 
-### Option B: Production Build
-
-#### Backend
-```bash
-.\venv\Scripts\Activate.ps1
-gunicorn backend.main:app --workers 4
-```
-
-#### Frontend
-```bash
-cd frontend
-npm run build
-npm run preview
-```
 
 ---
 
@@ -334,6 +345,15 @@ KRONOS/
 3. Check polling interval hasn't been disabled
 4. Restart frontend server: `npm run dev`
 
+---
+
+## 💬 Example Queries
+
+Interact with KRONOS using natural language queries:
+- `Investigate the export of crude oil from Russia to Cuba`
+- `Assess the impact of Fed interest rates on semiconductor technology`
+- `Track US sanctions on the Iranian energy sector`
+- `Monitor military alignments in the South China Sea`
 
 ---
 
@@ -341,12 +361,6 @@ KRONOS/
 
 - [Development Guide](./docs/DEVELOPMENT.md) - Contributing guidelines and architecture details
 - [Quick Start Guide](./docs/QUICK_START.md) - First-time user walkthrough
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see LICENSE file for details.
 
 ---
 
@@ -369,41 +383,10 @@ For issues, questions, or suggestions:
 
 ---
 
-**KRONOS** — Building the future of strategic intelligence, one relationship at a time. 🚀
+## 📝 License
+
+This project is licensed under the MIT License - see [LICENSE](./LICENSE) file for details.
 
 ---
 
-## 🏗️ Project Structure
-
-```text
-KRONOS/
-├── backend/                # FastAPI + Multi-Agent Logic
-│   ├── domain_connectors/  # API Providers
-│   ├── scripts/            # Maintenance & Graph Perfection
-│   ├── tests/              # Strategic Test Suite
-│   ├── main.py             # FastAPI Gateway
-│   ├── graph.py            # LangGraph Orchestration
-│   ├── config.py           # Neural Settings
-│   └── schemas.py          # Strict Ontology
-├── frontend/               # React + Vite Tactical UI
-├── logs/                   # System Intelligence Logs
-└── start-dev.bat           # Automated Multi-Terminal Ignition
-```
-
----
-
-## 📡 Tactical Commands (Examples)
-Interact with KRONOS using natural language queries:
-- `INVESTIGATE THE EXPORT OF CRUDE OIL FROM RUSSIA TO CUBA`
-- `ASSESS THE IMPACT OF FED INTEREST RATES ON SEMICONDUCTOR TECH`
-- `TRACK US SANCTIONS ON THE IRANIAN ENERGY SECTOR`
-- `MONITOR MILITARY ALIGNMENTS IN THE SOUTH CHINA SEA`
-
----
-
-## ⚖️ License & Security
-**Classification**: [TOP SECRET] // **Protocol**: Proprietary Intelligence Middleware.
-Developed for high-density strategic forecasting. No unauthorized redistribution.
-
----
-**[SYSTEM_HALT]** // KRONOS Intelligence Systems.
+**KRONOS** — Building the future of strategic intelligence. 🚀
