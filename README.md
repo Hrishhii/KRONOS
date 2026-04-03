@@ -18,6 +18,7 @@ KRONOS is a multi-agent intelligence platform for strategic forecasting and real
 
 - [Overview](#overview)
 - [Architecture](#architecture)
+- [Data Sources & APIs](#-data-sources--apis)
 - [Core Features](#core-features)
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -26,11 +27,15 @@ KRONOS is a multi-agent intelligence platform for strategic forecasting and real
 - [Project Structure](#project-structure)
 - [API Endpoints](#api-endpoints)
 - [Troubleshooting](#troubleshooting)
-- [Pushing to GitHub](#pushing-to-github)
+- [Example Queries](#example-queries)
+- [Additional Documentation](#additional-documentation)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
 
 ---
 
-## 🎯 Overview
+## 🎯Overview
 
 KRONOS is engineered to:
 - Process complex geopolitical queries using multi-agent AI systems
@@ -39,11 +44,11 @@ KRONOS is engineered to:
 - Visualize relationships in real-time with an interactive dashboard
 - Generate predictive briefings with dependency tracking
 
-Key differentiator: **Zero-clutter ontology** — only connected nodes are persisted; orphaned entities are filtered out automatically.
+Key differentiator: **Zero-clutter ontology** - only connected nodes are persisted; orphaned entities are filtered out automatically.
 
 ---
 
-## 🛰️ Architecture
+## 🛰️Architecture
 
 ### System Pipeline
 
@@ -62,7 +67,7 @@ Support Context Streams
     ├─→ Tavily contextual knowledge
     └─→ Neo4j Knowledge Graph context fetch
     ↓
-Cross-domain synthesis via LLM (Groq + LLaMA 3.1)
+Cross-domain synthesis via Groq LLM (LLaMA 3.3)
     ↓
 Chief Editor Agent (final briefing)
     ↓
@@ -74,7 +79,7 @@ Neo4j persist + API response
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
 | **Backend** | FastAPI + Python 3.10+ | Multi-agent orchestration, API endpoints |
-| **LLMs (Inference Engine)** | Groq + LLaMA 3.1 / 3.3 | Ultra-fast inference for core routing and analysis |
+| **LLMs (Inference Engine)** | Groq + LLaMA 3.3 | Ultra-fast inference for core routing and analysis |
 | **Knowledge Graph** | Neo4j | Entity/relationship persistence |
 | **Agent Framework** | LangGraph | Agentic workflows and routing |
 | **Frontend** | React 18 + Vite | Interactive graph visualization |
@@ -90,16 +95,16 @@ KRONOS ingests live and historical metrics from the following external APIs.
 
 | Domain / Engine | API Integrations & Links |
 |-----------------|--------------------------|
-| **Economics** | [FRED (Federal Reserve Economic Data)](https://fred.stlouisfed.org/docs/api/fred/) <br> [yfinance (Yahoo Finance)](https://pypi.org/project/yfinance/) |
-| **Geopolitics & News** | [Google News RSS](https://news.google.com/rss) <br> [NewsAPI](https://newsapi.org/) |
+| **Economics** | [FRED (Federal Reserve Economic Data)](https://fred.stlouisfed.org/docs/api/fred/), <br> [yfinance (Yahoo Finance)](https://pypi.org/project/yfinance/) |
+| **Geopolitics & News** | Google News RSS, <br> [NewsAPI](https://newsapi.org/) |
 | **Climate & Weather** | [OpenWeatherMap API](https://openweathermap.org/api) |
-| **Aerospace & Space** | [NASA API (EONET)](https://api.nasa.gov/) |
+| **Climatic Hazards** | [NASA API (EONET)](https://api.nasa.gov/) (Wildfires, Floods, Storms, Volcanoes)|
 | **Transportation** | [OpenSky Network API](https://openskynetwork.github.io/opensky-api/) (Flights) |
 | **World Base Context** | [Tavily API](https://tavily.com/) *(Search and Guidance)* |
 
 ---
 
-## 💎 Core Features
+## 💎Core Features
 
 ### 1. **Multi-Domain Intelligence Agents**
 - Parallel execution of 4 core domain agents (Geopolitics, Climate, Economics, Technology)
@@ -127,7 +132,7 @@ KRONOS ingests live and historical metrics from the following external APIs.
 
 ---
 
-## 📦 Prerequisites
+## 📦Prerequisites
 
 Before installation, ensure you have:
 
@@ -138,7 +143,7 @@ Before installation, ensure you have:
 
 ---
 
-## ⚙️ Installation
+## ⚙️Installation
 
 ### 1. Clone Repository
 ```bash
@@ -174,7 +179,7 @@ cd ..
 
 ---
 
-## 🔑 Configuration
+## 🔑Configuration
 
 ### 1. Environment Variables
 
@@ -218,7 +223,7 @@ NEO4J_PASSWORD=your_neo4j_password_here
 
 ---
 
-## 🚀 Running the System
+## 🚀Running the System
 
 
 
@@ -239,12 +244,11 @@ cd frontend
 npm run dev
 ```
 
-Frontend will be available at: `http://localhost:5173`
-
+Frontend will be available at: `http://localhost:5173`, open this link to start the application.
 
 ---
 
-## 📁 Project Structure
+## 📁Project Structure
 
 ```
 KRONOS/
@@ -262,7 +266,6 @@ KRONOS/
 │   │   ├── technology.py
 │   │   ├── climate.py
 │   │   ├── flights.py
-│   │   ├── ships.py
 │   │   └── ...
 │   ├── scripts/                     # Utility scripts
 │   │   ├── seed_graph.py
@@ -299,7 +302,7 @@ KRONOS/
 
 ---
 
-## 📡 API Endpoints
+## 📡API Endpoints
 
 ### Query Processing
 - **POST** `/api/v1/query` - Submit intelligence query
@@ -318,7 +321,7 @@ KRONOS/
 
 ---
 
-## 🐛 Troubleshooting
+## 🐛Troubleshooting
 
 ### Issue: Neo4j Connection Failed
 **Solution:**
@@ -347,7 +350,7 @@ KRONOS/
 
 ---
 
-## 💬 Example Queries
+## 💬Example Queries
 
 Interact with KRONOS using natural language queries:
 - `Investigate the export of crude oil from Russia to Cuba`
@@ -357,14 +360,14 @@ Interact with KRONOS using natural language queries:
 
 ---
 
-## 📚 Additional Documentation
+## 📚Additional Documentation
 
 - [Development Guide](./docs/DEVELOPMENT.md) - Contributing guidelines and architecture details
 - [Quick Start Guide](./docs/QUICK_START.md) - First-time user walkthrough
 
 ---
 
-## 🤝 Contributing
+## 🤝Contributing
 
 Contributions welcome! Please:
 1. Fork the repository
@@ -375,7 +378,7 @@ Contributions welcome! Please:
 
 ---
 
-## 📧 Support
+## 📧Support
 
 For issues, questions, or suggestions:
 - Open an [Issue](https://github.com/YOUR-USERNAME/KRONOS/issues)
@@ -383,7 +386,7 @@ For issues, questions, or suggestions:
 
 ---
 
-## 📝 License
+## 📝License
 
 This project is licensed under the MIT License - see [LICENSE](./LICENSE) file for details.
 
